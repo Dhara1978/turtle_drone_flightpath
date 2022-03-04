@@ -1,10 +1,17 @@
-#Plot Flight Path of Drone Assignment
-#import modules
+#import packages
 import os
+from tkinter import *
+from tkinter import messagebox
+from tkinter import filedialog
+from PIL import ImageTk, Image
 import turtle as t
 from turtle import Screen
 
-#declare functions to be used in main
+#gui functions
+def help_func():
+    messagebox.showinfo('Help', 'hello')
+
+#app functions
 def check_route(xcoord, ycoord):
   if xcoord > 600:
     print('Error: The route is outside of the grid')
@@ -15,11 +22,10 @@ def check_route(xcoord, ycoord):
   if ycoord < -600:
     print('Error: The route is outside of the grid')
 
-def route_plotter(route, drone_colour):
-  
+def route_plotter(route):
+
   screen = Screen()
   drone = t.Turtle()
-  t.pencolor(drone_colour)
 
   #set up screen, centre of the screen is 0,0 (bottom left is -600, -600)
   screen.setup (width=1220, height=1220, startx=0, starty=0)
@@ -69,25 +75,41 @@ def route_plotter(route, drone_colour):
       print('X:' + str(int(actualxcoord)) + ', Y:' + str(int(actualycoord)))
       check_route(startxcoord, startycoord)
 
-def main():
 
-  i = 0
+def plot_route():
 
-  for file in os.listdir():
+    file = filedialog.askopenfilename()
     ext = os.path.splitext(file)[-1].lower()
 
-    if ext == '.txt':
-      with open(file) as f:
-        nf = f.read().splitlines()    
-        drone_colors = ['red', 'green', 'blue']
-        drone_color = drone_colors[i]
-        i += 1
-        route_plotter(nf, drone_color)
-    else:
-      print('It\'s not a text document')
-  
-  print('')
+    try:
+        if ext == '.txt':
+            with open(file) as f:
+                nf = f.read().splitlines()
+                route_plotter(nf)
+        else:
+            messagebox.showinfo('Info', 'This is not a text file')
+    except:
+        print('this is an exception')
 
 
-if __name__ == '__main__':
-  main()
+    print('')
+
+#window setup
+window = Tk()
+window.title("Hello wold")
+window.geometry("700x560")
+#use image as background
+bg_img = ImageTk.PhotoImage(Image.open('daz_project.gif'))
+panel = Label(image = bg_img)
+panel.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+
+hello = Label(text="Drone Flight Path GUI")
+hello.pack()
+button = Button(text="Help", fg = 'green', command = help_func)
+button.place(x = 350, y = 220)
+button = Button(text="Plot Route", fg = 'green', command = plot_route)
+button.place(x = 335, y = 320)
+
+
+
+window.mainloop()
