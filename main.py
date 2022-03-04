@@ -9,18 +9,22 @@ from turtle import Screen
 
 #gui functions
 def help_func():
-    messagebox.showinfo('Help', 'hello')
+    messagebox.showinfo('Help', 'This GUI is to plot the path of a drone in a 12 x 12 square and raise a warning for the drone exiting the square')
 
 #app functions
 def check_route(xcoord, ycoord):
   if xcoord > 600:
     print('Error: The route is outside of the grid')
+    messagebox.showinfo('Error:', 'The route is outside of the grid')
   if ycoord > 600:
     print('Error: The route is outside of the grid')
+    messagebox.showinfo('Error:', 'The route is outside of the grid')
   if xcoord < -600:
     print('Error: The route is outside of the grid')
+    messagebox.showinfo('Error:', 'The route is outside of the grid')
   if ycoord < -600:
     print('Error: The route is outside of the grid')
+    messagebox.showinfo('Error:', 'The route is outside of the grid')
 
 def route_plotter(route):
 
@@ -28,7 +32,7 @@ def route_plotter(route):
   drone = t.Turtle()
 
   #set up screen, centre of the screen is 0,0 (bottom left is -600, -600)
-  screen.setup (width=1220, height=1220, startx=0, starty=0)
+  screen.setup (width=1.0, height=1.0, startx=0, starty=0)
   screen.bgcolor('#B7E3F1')
 
   startxcoord = int(route[0]) * 100 - 600
